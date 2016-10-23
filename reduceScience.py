@@ -2,6 +2,9 @@ from pyraf import iraf
 import string
 import os
 import sys
+'''
+Assume dfits and fitsort are installed on the machine. Fully reduces one scientific frame.
+'''
 
 inputFile = sys.argv[1]
 
@@ -9,9 +12,9 @@ rawDir = "../raw/"
 reducedDir = "../reduced/"
 myTrimSection = "[100:1000,100:1000]"
 
-os.system('dfits ' + inputFile + '| fitsort fafltnm > filter.tmp')
-          
-os.system('dfits ' + inputFile + '| fitsort tcstgt > tgt.tmp')
+os.system('dfits ' + inputFile + '| fitsort fafltnm > filter.tmp') #gets the filter from NOT
+#keyword  
+#os.system('dfits ' + inputFile + '| fitsort tcstgt > tgt.tmp')
                     
 filterFile = open("filter.tmp","r")
 line = filterFile.readline()
@@ -23,7 +26,8 @@ eachItem = string.split(string.strip(line))
 
 fileName = inputFile[7:]
 print fileName
-
+#if the file already exists, pyraf crashes, hence need to check for it. It doesn't
+#overwrite!
 if os.path.exists(reducedDir + "r" + fileName):
     sys.exit("file " + fileName + " has already been reduced")
 else:
