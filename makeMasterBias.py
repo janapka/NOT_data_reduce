@@ -2,9 +2,12 @@ from pyraf import iraf
 import string
 import os
 import sys
+'''
+The script needs dfits and fitsort routines installed. Combine is median to make it more robust.
+Bias is one of the accessible keywords in the fits header. 
+'''
 
-
-myTrimSection = "[100:1000,100:1000]"
+myTrimSection = "[100:1000,100:1000]" #to remove low quality data from the edges
 
 os.system('dfits ../raw/*fits | fitsort object detxbin | grep "bias" > biasList.lis')
 os.system('nedit biasList.lis')
